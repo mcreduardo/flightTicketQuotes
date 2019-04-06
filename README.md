@@ -1,10 +1,14 @@
+### Description
+
 Implementation of flight tickets search for multiple destinations in python using 
 [Skyscanner Flight Search-API](https://rapidapi.com/skyscanner/api/skyscanner-flight-search/details).
 
 
-# Example for searchMultipleDestinations.py:
+### Example 
 
-input:
+searchMultipleDestinations.py
+
+Input:
 ```python
 origin = "ORD"
 destinations = [\
@@ -15,6 +19,7 @@ outboundDate = "2019-04-11"
 inboundDate  = "2019-04-14"
 ```
 
+Output:
 ```
 From ORD to SFO.
 From 2019-04-11 to 2019-04-14.
