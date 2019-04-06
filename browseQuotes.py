@@ -3,7 +3,7 @@
 #
 #    >>>>> Get cheapest quotes from cache prices <<<<<
 #
-# note: Implemented for python 2 because of limitations of lybrary unirest
+# note: Implemented for python 2 only
 # March 2019
 # Eduardo Moura Cirilo Rocha
 ##########################################################################################
@@ -67,40 +67,40 @@ def browseQuotes(required_params, printOutput):
 
 
   ##### Handle data result
-
   # Search info
-  print ""
-  print "From " + response.body["Places"][1]["CityName"]\
-    + " (" + response.body["Places"][1]["SkyscannerCode"] + ")"\
-    + ", " + response.body["Places"][1]["CountryName"] + ", "\
-    + "to " + response.body["Places"][0]["CityName"]\
-    + " (" + response.body["Places"][0]["SkyscannerCode"] + ")"\
-    + ", " + response.body["Places"][0]["CountryName"] + "."
-  print "From " + required_params["outboundDate"]\
-    + " to " + required_params["inboundDate"] + "."
-
-  # Cheapest quotes:
-  print "\nCheapest quotes ("+ response.body["Currencies"][0]["Code"] +"):\n"
 
   if printOutput:
-    i = 1
-    for quote in response.body["Quotes"]:
-      if quote["Direct"]: direct_str = ", direct"
-      else: direct_str = ", not direct"
 
-      print "\t".expandtabs(2) + str(i) + ") " + "MinPrice: "\
-        + str(quote["MinPrice"]) + direct_str
-      print "\tOutbound:".expandtabs(6)
-      print "\tDeparture: ".expandtabs(8) + quote["OutboundLeg"]["DepartureDate"]
-      print "\tCarrier(s): ".expandtabs(8)\
-        + getCarrier(quote["OutboundLeg"]["CarrierIds"], response.body["Carriers"])
-      print "\tInbound:".expandtabs(6)
-      print "\tDeparture: ".expandtabs(8) + quote["InboundLeg"]["DepartureDate"]
-      print "\tCarrier(s): ".expandtabs(8)\
-        + getCarrier(quote["InboundLeg"]["CarrierIds"], response.body["Carriers"])
+    if not response.body["Quotes"]:
+      print "No results found for destination " + required_params["destinationPlace"] + "\n"
+    else:
       print ""
+      print "From " + required_params["originPlace"]\
+        + " to " + required_params["destinationPlace"] + "."
+      print "From " + required_params["outboundDate"]\
+        + " to " + required_params["inboundDate"] + "."
 
-      i += 1
+      # Cheapest quotes:
+      print "\nCheapest quotes ("+ response.body["Currencies"][0]["Code"] +"):\n"
+
+      i = 1
+      for quote in response.body["Quotes"]:
+        if quote["Direct"]: direct_str = ", direct"
+        else: direct_str = ", not direct"
+
+        print "\t".expandtabs(2) + str(i) + ") " + "MinPrice: "\
+          + str(quote["MinPrice"]) + direct_str
+        print "\tOutbound:".expandtabs(6)
+        print "\tDeparture: ".expandtabs(8) + quote["OutboundLeg"]["DepartureDate"]
+        print "\tCarrier(s): ".expandtabs(8)\
+          + getCarrier(quote["OutboundLeg"]["CarrierIds"], response.body["Carriers"])
+        print "\tInbound:".expandtabs(6)
+        print "\tDeparture: ".expandtabs(8) + quote["InboundLeg"]["DepartureDate"]
+        print "\tCarrier(s): ".expandtabs(8)\
+          + getCarrier(quote["InboundLeg"]["CarrierIds"], response.body["Carriers"])
+        print ""
+
+        i += 1
   
   return response
 
@@ -119,8 +119,8 @@ if __name__=="__main__":
     "country": "US",
     "currency": "USD",
     "locale": "en-US",
-    "originPlace": "SFO-sky",
-    "destinationPlace": "LHR-sky",
+    "originPlace": "SFO",
+    "destinationPlace": "LHR",
     "outboundDate": "2019-05-01",
     "inboundDate": "2019-05-10",
   }
