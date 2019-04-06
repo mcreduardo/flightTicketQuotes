@@ -16,7 +16,6 @@ destinations = [\
     "SFO",\
     "OAK",\
     "SJC"]
-
 outboundDate = "2019-04-11"
 inboundDate  = "2019-04-14"
 
